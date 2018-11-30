@@ -29,28 +29,29 @@ public class Main {
 			case HELP:
 				processHelp(a);
 				break;
-			/*case LOGOUT:
-				processExit();// TODO
+			case LOGOUT:
+				processLogout();
 				break;
 			case NEWRIDE:
-				processNewRide();// TODO
+				processNewRide();
 				break;
 			case USERRIDELIST:
-				processUserRideList();// TODO
+				processUserRideList();
 				break;
 			case RIDE:
-				processRide();// TODO
+				processRide();
 				break;
 			case CHECK:
-				processCheck();// TODO
+				processCheck();
 				break;
 			case REMOVE:
-				processRemove();// TODO
-				break;*/
+				processRemove();
+				break;
 			default:
 				processComandoInexistente();
+				break;
 			}
-		} else
+		} else//so funcionam estes
 			switch (option) {
 			case HELP:
 				processHelp(a);
@@ -60,16 +61,44 @@ public class Main {
 				break;
 			case REGISTER:
 				input.nextLine();
-				processRegister(input);// TODO
+				processRegister(input);
 				break;
-			/*case LOGIN:
-				processLogin();// TODO
-				break;*/
+			case LOGIN:
+				processLogin();
+				break;
 			default:
 				processComandoInexistente();
+				break;
 			}
 	}
-
+	
+	private static void processLogout() {
+		System.out.println("logout");
+	}
+	private static void processNewRide() {
+		System.out.println("new ride");
+	}
+	
+	private static void processUserRideList() {
+		System.out.println("user ride list");
+	}
+	
+	private static void processRide() {
+		System.out.println("ride");
+	}
+	
+	private static void processCheck() {
+		System.out.println("check");
+	}
+	
+	private static void processRemove() {
+		System.out.println("remove");
+	}
+	
+	private static void processLogin() {
+		System.out.println("login");
+	}
+	
 	private static void processComandoInexistente() {
 		System.out.println(ERROR);
 	}
@@ -104,19 +133,20 @@ public class Main {
 	}
 
 	private static void processHelp(FctBoleia a) {
-		if (a.running() != null) {
+		if (a.running() == null) {
 			System.out.println("ajuda - Mostra os comandos existentes");
 			System.out.println("termina - Termina a execucao do programa");
 			System.out.println("regista - Regista um novo utilizador no programa");
 			System.out.println("entrada - Permite a entrada ('login') dum utilizador no programa");
-		} else
+		}else {
 			System.out.println("ajuda - Mostra os comandos existentes");
-		System.out.println("sai - Termina a sessao deste utilizador no programa");
-		System.out.println("nova - Regista uma nova deslocacao");
-		System.out.println("lista - Lista todas ou algumas deslocacoes registadas");
-		System.out.println("boleia - Regista uma boleia para uma dada deslocacao");
-		System.out.println("consulta - Lista a informacao de uma dada deslocacao");
-		System.out.println("remove - Retira uma dada deslocacao");
+			System.out.println("sai - Termina a sessao deste utilizador no programa");
+			System.out.println("nova - Regista uma nova deslocacao");
+			System.out.println("lista - Lista todas ou algumas deslocacoes registadas");
+			System.out.println("boleia - Regista uma boleia para uma dada deslocacao");
+			System.out.println("consulta - Lista a informacao de uma dada deslocacao");
+			System.out.println("remove - Retira uma dada deslocacao");
+			}
 	}
 
 	public static void main(String[] args) {
