@@ -3,37 +3,31 @@
  */
 public class UserData {
 	private static final int GROWTH = 2;
+	private static final int START = 1;
 	private int count;
-	private static int NUM = 1;
 	private User[] user;
 
 	public UserData() {
 		count = 0;
-		user = new User[NUM];
+		user = new User[START];
+		Iterator it = new Iterator(user, count);
 	}
 	
 	public String getEmail(String email) {
-		return email;
-	}
-	
-	public String getName(String email) {
 		return user[searchIndex(email)].getEmail();
 	}
 	
 	
-	public void addUser(String email) {
-		
-	}
-	
-	private boolean hasUser(String email) {
-		//verificacoes de password numa biblioteca
-		return (searchIndex(email)>=0);
-	}
-
-	private void check() {
+	public void addUser (User user) {
 		if (isFull()) {
 			resize();
 		}
+		this.user[count++] = user;
+	}
+	
+	
+	/*private*/public boolean hasUser(String email) {//verificacao do email
+		return (searchIndex(email)>=0);
 	}
 	
 	private int searchIndex(String email) {
@@ -57,19 +51,11 @@ public class UserData {
 	}
 
 	private void resize() {
-		if (user.length != 0) {
-			User[] temp = new User[GROWTH * user.length];
-			for (int i = 0; i < user.length; i++) {
-				temp[i] = user[i];
-				user = temp;
-			}
-		} else {
-			User[] temp = new User[1];
-			for (int i = 0; i < user.length; i++) {
-				temp[i] = user[i];
-				user = temp;
-			}
+		User[] temp = new User[GROWTH * user.length];
+		for (int i = 0; i < user.length; i++) {
+		temp[i] = user[i];
+		user = temp;
 		}
-		
 	}
 }
+
