@@ -23,7 +23,7 @@ public class Main {
 		return input.next().toUpperCase();
 	}
 
-	private static void executeMenuOption(Scanner input, String option, FctBoleia a) {
+	private static void executeMenuOption(Scanner input, String option, FctBoleia a, UserData data) {
 		if (a.running() != null) {
 			switch (option) {
 			case HELP:
@@ -51,7 +51,7 @@ public class Main {
 				processComandoInexistente();
 				break;
 			}
-		} else//so funcionam estes
+		} else
 			switch (option) {
 			case HELP:
 				processHelp(a);
@@ -60,8 +60,7 @@ public class Main {
 				processEnd();
 				break;
 			case REGISTER:
-				input.nextLine();
-				processRegister(input);
+				processRegister(input, data);
 				break;
 			case LOGIN:
 				processLogin();
@@ -107,29 +106,33 @@ public class Main {
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processRegister(Scanner input) {
+	private static void processRegister(Scanner input, UserData data) {
 		String email = input.next();
-		input.nextLine();
-
 		// emailVerification(email); TODO
 		System.out.print("nome (maximo 50 caracteres): ");
 		String name = input.next();
-		input.nextLine();
-		System.out.println("");
-		System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
 		int i = 0;
-		boolean valid = true;
+		boolean right;
+		String password;
 		do {
-			String password = input.next();
-			System.out.println("");
-			input.nextLine();
-			if (password.length() < 3 || password.length() > 5) {
-				valid = false;
+			right = true;
+			System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
+			password = input.next();
+			if(password.length()<3||password.length()>5) {
 				i++;
+				right = false;
+				System.out.println("Password incorrecta.");
 			}
-		} while (i < 3 && !valid);
-
-		// if(/*&& emailVerification()*/)}
+		}while(i<3&&!right);
+		User user = new User(email, name, password);
+		data.addUser(user);
+		System.out.println(data.getEmail(email));/////////////
+		System.out.println(user.getEmail());//////////////////
+		System.out.println(user.getName());///////////////////
+		System.out.println(user.getPassword());///////////////
+		System.out.println(data.hasUser("1"));////////////////
+		System.out.println(data.hasUser("2"));////////////////
+		// if(/*&& emailVerification()*/)
 	}
 
 	private static void processHelp(FctBoleia a) {
@@ -152,18 +155,19 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
+		UserData data = new UserData();
 		String option = "";
 		do {
 			if (a.running() != null) {
 				// prompt
 				System.out.println(/*User.getEmail() + */" > "+"prompt dentro");
 				option = readMenuOption(input);
-				executeMenuOption(input, option, a);
+				executeMenuOption(input, option, a, data);
 
 			} else {
 				System.out.print(PROMPTOUT);
 				option = readMenuOption(input);
-				executeMenuOption(input, option, a);
+				executeMenuOption(input, option, a, data);
 			}
 		} while (!option.equals(END) || a.running() != null);
 		input.close();
