@@ -17,6 +17,14 @@ public class UserData {
 		return user[searchIndex(email)].getEmail();
 	}
 	
+	public String getPassword(String password) {
+		return user[searchIndex(password)].getPassword();
+	}
+	
+	public User getUser(String email) {
+		return user[searchIndex(email)];
+	}
+	
 	
 	public void addUser (User user) {
 		if (isFull()) {
@@ -26,7 +34,7 @@ public class UserData {
 	}
 	
 	
-	/*private*/public boolean hasUser(String email) {//verificacao do email
+	public boolean hasUser(String email) {//verificacao do email
 		return (searchIndex(email)>=0);
 	}
 	
