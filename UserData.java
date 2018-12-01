@@ -12,43 +12,41 @@ public class UserData {
 		user = new User[START];
 		Iterator it = new Iterator(user, count);
 	}
-	
+
 	public String getEmail(String email) {
 		return user[searchIndex(email)].getEmail();
 	}
-	
+
 	public String getPassword(String password) {
 		return user[searchIndex(password)].getPassword();
 	}
-	
+
 	public User getUser(String email) {
 		return user[searchIndex(email)];
 	}
-	
-	
-	public void addUser (User user) {
+
+	public void addUser(User user) {
 		if (isFull()) {
 			resize();
 		}
 		this.user[count++] = user;
 	}
-	
-	
-	public boolean hasUser(String email) {//verificacao do email
-		return (searchIndex(email)>=0);
+
+	public boolean hasUser(String email) {
+		return (searchIndex(email) >= 0);
 	}
-	
+
 	private int searchIndex(String email) {
 		boolean found = false;
-		int i=0;
+		int i = 0;
 		int result = -1;
-		while((i<count)&&(!found)) {
-			if(user[i].getEmail().equals(email)) {
+		while ((i < count) && (!found)) {
+			if (user[i].getEmail().equals(email)) {
 				found = true;
-			}
-			else i++;
+			} else
+				i++;
 		}
-		if(found) {
+		if (found) {
 			result = i;
 		}
 		return result;
@@ -61,9 +59,8 @@ public class UserData {
 	private void resize() {
 		User[] temp = new User[GROWTH * user.length];
 		for (int i = 0; i < user.length; i++) {
-		temp[i] = user[i];
-		user = temp;
+			temp[i] = user[i];
+			user = temp;
 		}
 	}
 }
-

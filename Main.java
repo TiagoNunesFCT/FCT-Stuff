@@ -31,7 +31,7 @@ public class Main {
 				processHelp(a);
 				break;
 			case LOGOUT:
-				processLogout();
+				processLogout(a);
 				break;
 			case NEWRIDE:
 				processNewRide();
@@ -72,8 +72,9 @@ public class Main {
 			}
 	}
 
-	private static void processLogout() {//TODO
-		System.out.println("logout");
+	private static void processLogout(FctBoleia a) {//TODO
+		a.logout();
+		System.out.println(ENDMESSAGE);
 	}
 
 	private static void processNewRide() {//TODO
@@ -174,7 +175,7 @@ public class Main {
 		String option = "";
 		do {
 			if (a.getUser() != null) {
-				System.out.println(a.getCurrentUser().getEmail() + " > ");//prompt dentro de sessao
+				System.out.print(a.getCurrentUser().getEmail() + " > ");//prompt dentro de sessao
 				option = readMenuOption(input);
 				executeMenuOption(input, option, a, data);
 
