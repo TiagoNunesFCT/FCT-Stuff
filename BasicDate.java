@@ -19,20 +19,13 @@ public class BasicDate {
 		}
 
 	}
-	
+
+	// TODO
 	/*
-	 * Date validations
+	 * verificacoes da data
 	 */
-	public boolean isValid(BasicDate date) {
-		boolean valid;
-		if (date.getYear()<2018 ||
-				(date.getDay()>30 && (date.getMonth()==4||date.getMonth()==6||date.getMonth()==9||date.getMonth()==11))||
-				(date.getDay()>31 && (date.getMonth()==1||date.getMonth()==3||date.getMonth()==5||date.getMonth()==7||date.getMonth()==8||date.getMonth()==10||date.getMonth()==12))||
-				(((date.getYear()%4) ==0) && (date.getDay()>29 && date.getMonth()==2))||
-				(((date.getYear()%4) !=0) && (date.getDay()>28 && date.getMonth()==2))) {
-			valid = false;
-		}else valid = true;
-		return valid;
+	public boolean isValid() {
+		return false;
 	}
 
 	/**
