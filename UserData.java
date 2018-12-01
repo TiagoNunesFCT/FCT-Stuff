@@ -10,15 +10,19 @@ public class UserData {
 	public UserData() {
 		count = 0;
 		user = new User[START];
-		Iterator it = new Iterator(user, count);
+		// Iterator it = new Iterator(user, count);
 	}
 
 	public String getEmail(String email) {
 		return user[searchIndex(email)].getEmail();
 	}
 
-	public String getPassword(String password) {
-		return user[searchIndex(password)].getPassword();
+	public String getPassword(String email) {
+		return user[searchIndex(email)].getPassword();
+	}
+
+	public String getName(String email) {
+		return user[searchIndex(email)].getPassword();
 	}
 
 	public User getUser(String email) {

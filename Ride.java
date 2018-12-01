@@ -8,10 +8,8 @@ public class Ride {
 	private double time;
 	private double duration;
 	private int seats;
-	
-	
-	
+
 	public Ride() {
-		
+
 	}
 }

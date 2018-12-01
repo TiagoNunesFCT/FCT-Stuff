@@ -1,4 +1,3 @@
-
 public class BasicDate {
 
 	private static final int NUM_FIELDS = 3;
@@ -6,9 +5,10 @@ public class BasicDate {
 	private int[] rawDate;
 
 	/***
-	 * Builds a new raw date object. 
-	 * @param date -- a string of the form N1-N2-N3, 
-	 * where N1,N2,N3 are positive numbers representable as integers.
+	 * Builds a new raw date object.
+	 * 
+	 * @param date -- a string of the form N1-N2-N3, where N1,N2,N3 are positive
+	 *             numbers representable as integers.
 	 */
 	public BasicDate(String date) {
 		String[] split = date.split("-");
@@ -20,41 +20,47 @@ public class BasicDate {
 
 	}
 
-	// TODO
 	/*
 	 * verificacoes da data
 	 */
-	public boolean isValid() {
-		return false;
+	public boolean isValid() {// anos bissextos
+		boolean valid = true;
+		if (getYear() < 2018
+				|| (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
+				|| (getDay() > 31 && (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7
+						|| getMonth() == 8 || getMonth() == 10 || getMonth() == 12))
+				|| (((getYear() % 4) == 0) && (getDay() > 29 && getMonth() == 2))
+				|| (((getYear() % 4) != 0) && (getDay() > 28 && getMonth() == 2))) {
+			valid = false;
+		}
+		return valid;
 	}
 
 	/**
-	 * Returns the year field of this date, assuming the string used
-	 * in the constructor was a valid date (i.e., isValid() ).
+	 * Returns the year field of this date, assuming the string used in the
+	 * constructor was a valid date (i.e., isValid() ).
 	 * 
 	 */
 	public int getYear() {
 		return rawDate[2];
 	}
-	
+
 	/**
-	 * Returns the day field of this date, assuming the string used
-	 * in the constructor was a valid date (i.e., isValid() ).
-	 *  
+	 * Returns the day field of this date, assuming the string used in the
+	 * constructor was a valid date (i.e., isValid() ).
+	 * 
 	 */
 	public int getDay() {
 		return rawDate[0];
 	}
-	
+
 	/**
-	 * Returns the month field of this date, assuming the string used
-	 * in the constructor was a valid date (i.e., isValid() ).
+	 * Returns the month field of this date, assuming the string used in the
+	 * constructor was a valid date (i.e., isValid() ).
 	 * 
 	 */
 	public int getMonth() {
 		return rawDate[1];
 	}
-	
-
 
 }
