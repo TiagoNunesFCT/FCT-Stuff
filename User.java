@@ -17,15 +17,11 @@ public class User {
 		return email;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
 	public String getPassword() {
 		return password;
 	}
 	
-	public boolean equals(User otherUser) {
-		return name.equals(otherUser.getEmail());
+	public boolean equals(User otherUser) {//verificar se e preciso
+		return email.equals(otherUser.getEmail());
 	}
 }

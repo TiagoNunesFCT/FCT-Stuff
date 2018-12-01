@@ -1,6 +1,3 @@
-/*
- * 
- */
 public class FctBoleia {
 	public User user;
 	
@@ -17,5 +14,9 @@ public class FctBoleia {
 	
 	public User getCurrentUser() {
 		return user;
+	}
+	
+	public void logout() {
+		user = null;
 	}
 }
