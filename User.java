@@ -5,7 +5,7 @@ public class User {
 	private String email;
 	private String name;
 	private String password;
-	private RideData rideData;
+	RideData rideData;
 
 	// pre: email != null && name != null || password != null
 	public User(String email, String name, String password) {
@@ -31,6 +31,9 @@ public class User {
 		return email.equals(otherUser.getEmail());
 	}
 	
+	public void addRide(Ride ride) {
+		rideData.addRide(ride);
+	}
 	
 	private RideData getRideData() {
 		return rideData;

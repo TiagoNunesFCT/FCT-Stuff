@@ -87,10 +87,10 @@ public class Main {
 		int time = input.nextInt();
 		float duration = input.nextFloat();
 		int seats = input.nextInt();
-		/*if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
+		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
 			Ride r = new Ride(origin, destination, basicDate, time, duration, seats);
 			a.getCurrentUser().addRide(r);
-		}*/
+		}
 		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
 
 	}
@@ -140,7 +140,7 @@ public class Main {
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processRegister(Scanner input, UserData userData) {
+	private static void processRegister(Scanner input, UserData userData) {//dividir em metodos auxiliares
 		String email = input.next();
 		input.nextLine();
 		if (!userData.hasUser(email)) {
