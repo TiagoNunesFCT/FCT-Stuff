@@ -8,10 +8,12 @@ public class Ride {
 	private double time;
 	private double duration;
 	private int seats;
-	
-	
-	
-	public Ride() {
-		
+
+	public Ride(String origin, String destination, BasicDate basicDate, double time, double duration, int seats) {
+		this.origin = origin;
+		this.destination = destination;
+		this.time = time;
+		this.duration = duration;
+		this.seats = seats;
 	}
 }

@@ -24,8 +24,8 @@ public class Main {
 		return input.next().toUpperCase();
 	}
 
-	private static void executeMenuOption(Scanner input, String option, FctBoleia a, UserData data) {
-		if (a.getUser() != null) {
+	private static void executeMenuOption(Scanner input, String option, FctBoleia a, UserData userData) {
+		if (a.getCurrentUser() != null) {
 			switch (option) {
 			case HELP:
 				processHelp(a);
@@ -34,7 +34,7 @@ public class Main {
 				processLogout(a);
 				break;
 			case NEWRIDE:
-				processNewRide();
+				processNewRide(input, userData, a);
 				break;
 			case USERRIDELIST:
 				processUserRideList();
@@ -61,10 +61,10 @@ public class Main {
 				processEnd();
 				break;
 			case REGISTER:
-				processRegister(input, data);
+				processRegister(input, userData);
 				break;
 			case LOGIN:
-				processLogin(input, data, a);
+				processLogin(input, userData, a);
 				break;
 			default:
 				processComandoInexistente();
@@ -72,49 +72,63 @@ public class Main {
 			}
 	}
 
-	private static void processLogout(FctBoleia a) {//TODO
+	private static void processLogout(FctBoleia a) {
 		a.logout();
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processNewRide() {//TODO
-		System.out.println("new ride");
+	private static void processNewRide(Scanner input, UserData userData, FctBoleia a) {// WIP
+		String origin = input.next();
+		input.nextLine();
+		String destination = input.next();
+		input.nextLine();
+		String date = input.next();
+		BasicDate basicDate = new BasicDate(date);
+		int time = input.nextInt();
+		float duration = input.nextFloat();
+		int seats = input.nextInt();
+		/*if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
+			Ride r = new Ride(origin, destination, basicDate, time, duration, seats);
+			a.getCurrentUser().addRide(r);
+		}*/
+		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
+
 	}
 
-	private static void processUserRideList() {//TODO
+	private static void processUserRideList() {// TODO
 		System.out.println("user ride list");
 	}
 
-	private static void processRide() {//TODO
+	private static void processRide() {// TODO
 		System.out.println("ride");
 	}
 
-	private static void processCheck() {//TODO
+	private static void processCheck() {// TODO
 		System.out.println("check");
 	}
 
-	private static void processRemove() {//TODO
+	private static void processRemove() {// TODO
 		System.out.println("remove");
 	}
 
-	private static void processLogin(Scanner input, UserData data, FctBoleia a) {
+	private static void processLogin(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
-		if (data.hasUser(email)) {
+		if (userData.hasUser(email)) {
 			boolean right = false;
 			int i = 0;
 			do {
 				System.out.print("password: ");
 				String password = input.next();
-				if (password.equals(data.getPassword(email))) {
+				if (password.equals(userData.getPassword(email))) {
 					right = true;
-					a.setCurrentUser(data.getUser(email));
+					a.setCurrentUser(userData.getUser(email));
 				} else {
 					System.out.println(WRONGPASSWORD);
 				}
 				i++;
 			} while (!right && i < 3);
-		}else {
-			System.out.println("Utilizador nao existente");
+		} else {
+			System.out.println("Utilizador nao existente.");
 		}
 	}
 
@@ -126,34 +140,40 @@ public class Main {
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processRegister(Scanner input, UserData data) {
+	private static void processRegister(Scanner input, UserData userData) {
 		String email = input.next();
-		if(!data.hasUser(email)) {
+		input.nextLine();
+		if (!userData.hasUser(email)) {
 			System.out.print("nome (maximo 50 caracteres): ");
-			String name = input.next();
+			String name = input.nextLine();
 			int i = 0;
 			boolean right;
 			String password;
 			do {
 				right = true;
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
-				password = input.next();
-				if(password.length()<3||password.length()>5) {
+				password = input.next();//verificar que tem so digitos e letras
+				input.nextLine();
+				if (password.length() < 3 || password.length() > 5) {
 					i++;
 					right = false;
 					System.out.println("Password incorrecta.");
+					if(i==3) {
+						System.out.println("Registo nao efetuado.");
+					}
 				}
-			}while(i<3&&!right);
+			} while (i < 3 && !right);
 			User user = new User(email, name, password);
-			data.addUser(user);
-		}else {
+			userData.addUser(user);
+			System.out.println("Registo efetuado.");
+		} else {
 			System.out.println("Utilizador ja existente.");
 			System.out.println("Registo nao efetuado.");
 		}
 	}
 
 	private static void processHelp(FctBoleia a) {
-		if (a.getUser() == null) {
+		if (a.getCurrentUser() == null) {
 			System.out.println("ajuda - Mostra os comandos existentes");
 			System.out.println("termina - Termina a execucao do programa");
 			System.out.println("regista - Regista um novo utilizador no programa");
@@ -168,23 +188,24 @@ public class Main {
 			System.out.println("remove - Retira uma dada deslocacao");
 		}
 	}
+
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
-		UserData data = new UserData();
+		UserData userData = new UserData();
 		String option = "";
 		do {
-			if (a.getUser() != null) {
-				System.out.print(a.getCurrentUser().getEmail() + " > ");//prompt dentro de sessao
+			if (a.getCurrentUser() != null) {
+				System.out.print(a.getCurrentUser().getEmail() + " > ");// prompt dentro de sessao
 				option = readMenuOption(input);
-				executeMenuOption(input, option, a, data);
+				executeMenuOption(input, option, a, userData);
 
 			} else {
 				System.out.print(PROMPTOUT);
 				option = readMenuOption(input);
-				executeMenuOption(input, option, a, data);
+				executeMenuOption(input, option, a, userData);
 			}
-		} while (!option.equals(END) || a.getUser() != null);
+		} while (!option.equals(END) || a.getCurrentUser() != null);
 		input.close();
 	}
 }
