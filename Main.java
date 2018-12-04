@@ -43,7 +43,7 @@ public class Main {
 				processRide();
 				break;
 			case CHECK:
-				processCheck();
+				processCheck(input, userData);
 				break;
 			case REMOVE:
 				processRemove();
@@ -84,11 +84,11 @@ public class Main {
 		input.nextLine();
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
-		int time = input.nextInt();
-		float duration = input.nextFloat();
+		double time = input.nextDouble();
+		double duration = input.nextDouble();
 		int seats = input.nextInt();
 		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
-			Ride r = new Ride(origin, destination, basicDate, time, duration, seats);
+			Ride r = new Ride(origin, destination, basicDate, time, duration, seats);//tou a fazer agora
 			a.getCurrentUser().addRide(r);
 		}
 		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
@@ -96,15 +96,32 @@ public class Main {
 	}
 
 	private static void processUserRideList() {// TODO
-		System.out.println("user ride list");
+		
 	}
-
 	private static void processRide() {// TODO
 		System.out.println("ride");
 	}
 
-	private static void processCheck() {// TODO
-		System.out.println("check");
+	private static void processCheck(Scanner input, UserData userData) {// WIP
+																		//vou fazer a seguir, ja ta praticamente acabado
+		String email = input.next();
+		String date = input.next();
+		BasicDate basicDate = new BasicDate(date);
+		input.nextLine();
+		if(!userData.hasUser(email)) {
+			System.out.println("Utilizador inexistente.");
+		}else {
+			if(!basicDate.isValid()) {
+				System.out.println("Data invalida.");
+			}else {
+				System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
+				System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
+				//System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + userData.getUser(email).getRideData().getRide(date).getTime() + userData.getUser(email).getRideData().getRide(date).getDuration() + userData.getUser(email).getRideData().getRide(date).getSeats());
+				System.out.println();
+				
+			}
+		}
+		
 	}
 
 	private static void processRemove() {// TODO
@@ -140,7 +157,7 @@ public class Main {
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processRegister(Scanner input, UserData userData) {//dividir em metodos auxiliares
+	private static void processRegister(Scanner input, UserData userData) {// dividir em metodos auxiliares
 		String email = input.next();
 		input.nextLine();
 		if (!userData.hasUser(email)) {
@@ -152,13 +169,13 @@ public class Main {
 			do {
 				right = true;
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
-				password = input.next();//verificar que tem so digitos e letras
+				password = input.next();// verificar que tem so digitos e letras
 				input.nextLine();
 				if (password.length() < 3 || password.length() > 5) {
 					i++;
 					right = false;
 					System.out.println("Password incorrecta.");
-					if(i==3) {
+					if (i == 3) {
 						System.out.println("Registo nao efetuado.");
 					}
 				}

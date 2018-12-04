@@ -3,7 +3,7 @@
  */
 public class UserData {
 	private static final int GROWTH = 2;
-	private static final int START = 1;
+	private static final int START = 1000;
 	private int count;
 	private User[] user;
 
@@ -50,6 +50,8 @@ public class UserData {
 	}
 
 	private boolean isFull() {
+		System.out.println(count);
+		System.out.println(user.length);
 		return count == user.length;
 	}
 

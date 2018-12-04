@@ -2,7 +2,7 @@
  * boleias individuais
  */
 public class Ride {
-	private int date;
+	private String date;
 	private String origin;
 	private String destination;
 	private double time;
@@ -16,4 +16,27 @@ public class Ride {
 		this.duration = duration;
 		this.seats = seats;
 	}
+	
+	
+	
+	public String getOrigin() {
+		return origin;
+	}
+	
+	public String getDestination() {
+		return destination;
+	}
+	
+	public double getTime() {
+		return time;
+	}
+	
+	public double getDuration() {
+		return duration;
+	}
+	
+	public int getSeats() {
+		return seats;
+	}
+	
 }

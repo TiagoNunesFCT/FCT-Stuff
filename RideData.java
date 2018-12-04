@@ -12,15 +12,20 @@ public class RideData {
 		ride = new Ride[START];
 		// Iterator
 	}
-	
+
 	public void addRide(Ride ride) {
-		if(isFull()) {
+		if (isFull()) {
 			resize();
 		}
 		this.ride[count++] = ride;
 	}
+
 	public boolean hasRide(String date) {
 		return (searchIndex(date) >= 0);
+	}
+	
+	public Ride getRide(String date) {
+		return ride[searchIndex(date)];
 	}
 
 	private int searchIndex(String date) {

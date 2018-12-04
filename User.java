@@ -30,12 +30,12 @@ public class User {
 	public boolean equals(User otherUser) {// verificar se e preciso
 		return email.equals(otherUser.getEmail());
 	}
-	
+
 	public void addRide(Ride ride) {
 		rideData.addRide(ride);
 	}
-	
-	private RideData getRideData() {
+
+	public RideData getRideData() {
 		return rideData;
 	}
 }
