@@ -8,16 +8,21 @@ public class Ride {
 	private double time;
 	private double duration;
 	private int seats;
+	private int availableSeats;
 
-	public Ride(String origin, String destination, BasicDate basicDate, double time, double duration, int seats) {
+	public Ride(String origin, String destination, String date, double time, double duration, int seats) {
+		this.date = date;
 		this.origin = origin;
 		this.destination = destination;
 		this.time = time;
 		this.duration = duration;
 		this.seats = seats;
+		availableSeats = seats;
 	}
 	
-	
+	public String getDate() {
+		return date;
+	}
 	
 	public String getOrigin() {
 		return origin;
@@ -37,6 +42,14 @@ public class Ride {
 	
 	public int getSeats() {
 		return seats;
+	}
+	
+	public void seatsDec() {
+		availableSeats--;
+	}
+	
+	public int getAvailableSeats() {
+		return availableSeats;
 	}
 	
 }

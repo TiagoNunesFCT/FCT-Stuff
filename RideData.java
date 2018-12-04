@@ -25,20 +25,24 @@ public class RideData {
 	}
 	
 	public Ride getRide(String date) {
-		return ride[searchIndex(date)];
+		if(searchIndex(date)==-1) {
+			return null;
+		}else {
+			return ride[searchIndex(date)];
+		}
 	}
 
 	private int searchIndex(String date) {
 		boolean found = false;
 		int i = 0;
 		int result = -1;
-		/*while ((i < count) && (!found)) {
+		while ((i < count) && (!found)) {
 			if (ride[i].getDate().equals(date)) {
 				found = true;
 			} else {
 				i++;
 			}
-		}*/
+		}
 		if (found) {
 			result = i;
 		}

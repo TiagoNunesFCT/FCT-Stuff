@@ -40,7 +40,7 @@ public class Main {
 				processUserRideList();
 				break;
 			case RIDE:
-				processRide();
+				processRide(input, userData, a);
 				break;
 			case CHECK:
 				processCheck(input, userData);
@@ -88,40 +88,48 @@ public class Main {
 		double duration = input.nextDouble();
 		int seats = input.nextInt();
 		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
-			Ride r = new Ride(origin, destination, basicDate, time, duration, seats);//tou a fazer agora
-			a.getCurrentUser().addRide(r);
+			Ride ride = new Ride(origin, destination, date, time, duration, seats);// tou a fazer agora
+			a.getCurrentUser().addRide(ride);
 		}
 		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
 
 	}
 
 	private static void processUserRideList() {// TODO
-		
+
 	}
-	private static void processRide() {// TODO
-		System.out.println("ride");
+
+	private static void processRide(Scanner input, UserData userData, FctBoleia a) {// WIP
+		String email = input.next();
+		String date = input.next();
+		input.nextLine();
+		BasicDate basicDate = new BasicDate(date);
+		if (validation(userData, basicDate, a, email, date)) {
+			userData.getUser(email).getRideData().getRide(date).seatsDec();
+			System.out.println("Boleia registada.");
+		}
 	}
 
 	private static void processCheck(Scanner input, UserData userData) {// WIP
-																		//vou fazer a seguir, ja ta praticamente acabado
 		String email = input.next();
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
 		input.nextLine();
-		if(!userData.hasUser(email)) {
+		if (!userData.hasUser(email)) {// o que acontece se o utilizador nao existir e a data nao for valida?
 			System.out.println("Utilizador inexistente.");
-		}else {
-			if(!basicDate.isValid()) {
+		} else {
+			if (!basicDate.isValid()) {
 				System.out.println("Data invalida.");
-			}else {
+			} else if (userData.getUser(email).getRideData().getRide(date) == null) {
+				System.out.println("Deslocacao nao existe.");
+			} else {
 				System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
 				System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
-				//System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + userData.getUser(email).getRideData().getRide(date).getTime() + userData.getUser(email).getRideData().getRide(date).getDuration() + userData.getUser(email).getRideData().getRide(date).getSeats());
-				System.out.println();
-				
-			}
+				System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + " "+ userData.getUser(email).getRideData().getRide(date).getTime() + " "	+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "+ userData.getUser(email).getRideData().getRide(date).getSeats());
+				System.out.println("Lugares vagos: " + userData.getUser(email).getRideData().getRide(date).getAvailableSeats());
+			} // arredondar para as casas decimais certas
 		}
-		
+
 	}
 
 	private static void processRemove() {// TODO
@@ -171,7 +179,7 @@ public class Main {
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
 				password = input.next();// verificar que tem so digitos e letras
 				input.nextLine();
-				if (password.length() < 3 || password.length() > 5) {
+				if (validPassword(password)) {
 					i++;
 					right = false;
 					System.out.println("Password incorrecta.");
@@ -205,6 +213,54 @@ public class Main {
 			System.out.println("remove - Retira uma dada deslocacao");
 		}
 	}
+
+	private static boolean validation(UserData userData, BasicDate basicDate, FctBoleia a, String date, String email) {
+		boolean valid = true;
+		if (userData.hasUser(email)) {
+			if (basicDate.isValid()) {
+				if (userData.getUser(email).getRideData().hasRide(date)) {
+					if (!email.equals(a.getCurrentUser().getEmail())) {
+						if (userData.getUser(email).getRideData().getRide(date).getAvailableSeats() > 0) {
+							userData.getUser(email).getRideData().getRide(date).seatsDec();
+						} else {
+							System.out.println(a.getCurrentUser().getName() + " nao existe lugar. Boleia nao registada.");
+							valid = false;
+						}
+					} else {
+						System.out.println(a.getCurrentUser().getName() + " nao pode dar boleia a si propria. Boleia nao registada.");
+						valid = false;
+					}
+				} else {
+					System.out.println("Deslocacao nao existe.");
+					valid = false;
+				}
+			} else {
+				System.out.println("Data invalida.");
+				valid = false;
+			}
+		} else {
+			System.out.println("Utilizador inexistente.");
+			valid = false;
+		}
+		return valid;
+	}
+	
+	private static boolean validPassword(String pass) {
+	    int n = 0;
+	        boolean isValid;
+	        int count = 0;
+	        while (n < pass.length()){
+	            if (    ((pass.charAt(n) > 122) || ((pass.charAt(n) > 90) && (pass.charAt(n) < 97)) || (pass.charAt(n) < 48))){
+	                count++;
+	        }
+
+	            n++;
+	    }
+	        isValid = ((count == 0) && (pass.length() < 3 || pass.length() > 5));
+	        return isValid;
+	       }
+
+
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
