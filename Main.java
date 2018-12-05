@@ -84,7 +84,7 @@ public class Main {
 		input.nextLine();
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
-		double time = input.nextDouble();
+		int time = input.nextInt();
 		double duration = input.nextDouble();
 		int seats = input.nextInt();
 		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
@@ -181,7 +181,7 @@ public class Main {
 			do {
 				right = true;
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
-				password = input.next();// verificar que tem so digitos e letras
+				password = input.next();
 				input.nextLine();
 				if (invalidPassword(password)) {
 					i++;

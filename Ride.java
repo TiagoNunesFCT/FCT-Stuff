@@ -5,12 +5,12 @@ public class Ride {
 	private String date;
 	private String origin;
 	private String destination;
-	private double time;
+	private int time;
 	private double duration;
 	private int seats;
 	private int availableSeats;
 
-	public Ride(String origin, String destination, String date, double time, double duration, int seats) {
+	public Ride(String origin, String destination, String date, int time, double duration, int seats) {
 		this.date = date;
 		this.origin = origin;
 		this.destination = destination;
