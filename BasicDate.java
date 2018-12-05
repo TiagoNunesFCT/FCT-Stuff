@@ -17,7 +17,6 @@ public class BasicDate {
 		for (int i = 0; i < split.length; i++) {
 			rawDate[i] = Integer.parseInt(split[i].trim());
 		}
-
 	}
 
 	/*

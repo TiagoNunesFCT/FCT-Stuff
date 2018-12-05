@@ -77,7 +77,7 @@ public class Main {
 		System.out.println(ENDMESSAGE);
 	}
 
-	private static void processNewRide(Scanner input, UserData userData, FctBoleia a) {// WIP
+	private static void processNewRide(Scanner input, UserData userData, FctBoleia a) {
 		String origin = input.next();
 		input.nextLine();
 		String destination = input.next();
@@ -88,7 +88,7 @@ public class Main {
 		double duration = input.nextDouble();
 		int seats = input.nextInt();
 		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
-			Ride ride = new Ride(origin, destination, date, time, duration, seats);// tou a fazer agora
+			Ride ride = new Ride(origin, destination, date, time, duration, seats);
 			a.getCurrentUser().addRide(ride);
 		}
 		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
@@ -99,18 +99,18 @@ public class Main {
 
 	}
 
-	private static void processRide(Scanner input, UserData userData, FctBoleia a) {// WIP
+	private static void processRide(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
 		String date = input.next();
 		input.nextLine();
 		BasicDate basicDate = new BasicDate(date);
-		if (validation(userData, basicDate, a, email, date)) {
+		if (validation(userData, basicDate, a, date, email)) {
 			userData.getUser(email).getRideData().getRide(date).seatsDec();
 			System.out.println("Boleia registada.");
 		}
 	}
 
-	private static void processCheck(Scanner input, UserData userData) {// WIP
+	private static void processCheck(Scanner input, UserData userData) {
 		String email = input.next();
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
@@ -125,8 +125,12 @@ public class Main {
 			} else {
 				System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
 				System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
-				System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + " "+ userData.getUser(email).getRideData().getRide(date).getTime() + " "	+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "+ userData.getUser(email).getRideData().getRide(date).getSeats());
-				System.out.println("Lugares vagos: " + userData.getUser(email).getRideData().getRide(date).getAvailableSeats());
+				System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + " "
+						+ userData.getUser(email).getRideData().getRide(date).getTime() + " "
+						+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "
+						+ userData.getUser(email).getRideData().getRide(date).getSeats());
+				System.out.println(
+						"Lugares vagos: " + userData.getUser(email).getRideData().getRide(date).getAvailableSeats());
 			} // arredondar para as casas decimais certas
 		}
 
@@ -179,7 +183,7 @@ public class Main {
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
 				password = input.next();// verificar que tem so digitos e letras
 				input.nextLine();
-				if (validPassword(password)) {
+				if (invalidPassword(password)) {
 					i++;
 					right = false;
 					System.out.println("Password incorrecta.");
@@ -227,7 +231,8 @@ public class Main {
 							valid = false;
 						}
 					} else {
-						System.out.println(a.getCurrentUser().getName() + " nao pode dar boleia a si propria. Boleia nao registada.");
+						System.out.println(a.getCurrentUser().getName()
+								+ " nao pode dar boleia a si propria. Boleia nao registada.");
 						valid = false;
 					}
 				} else {
@@ -244,29 +249,31 @@ public class Main {
 		}
 		return valid;
 	}
-	
-	private static boolean validPassword(String pass) {
-	    int n = 0;
-	        boolean isValid;
-	        int count = 0;
-	        while (n < pass.length()){
-	            if (    ((pass.charAt(n) > 122) || ((pass.charAt(n) > 90) && (pass.charAt(n) < 97)) || (pass.charAt(n) < 48))){
-	                count++;
-	        }
 
-	            n++;
-	    }
-	        isValid = ((count == 0) && (pass.length() < 3 || pass.length() > 5));
-	        return isValid;
-	       }
-
-
+	private static boolean invalidPassword(String pass) {
+		int n = 0;
+		boolean inValid = false;
+		int count = 0;
+		while (n < pass.length()) {
+			if (((pass.charAt(n) > 122) || ((pass.charAt(n) > 90) && (pass.charAt(n) < 97)) || (pass.charAt(n) < 48))) {
+				count++;
+			}
+			n++;
+		}
+		if ((count != 0) || (pass.length() < 3 || pass.length() > 5)) {
+			inValid = true;
+		}
+		return inValid;
+	}
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
 		UserData userData = new UserData();
 		String option = "";
+		Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
+		Ride r2 = new Ride("origin", "destination", "02-01-2019", 1, 1, 2);
+		//IteratorSorted i = new IteratorSorted()
 		do {
 			if (a.getCurrentUser() != null) {
 				System.out.print(a.getCurrentUser().getEmail() + " > ");// prompt dentro de sessao
@@ -274,7 +281,7 @@ public class Main {
 				executeMenuOption(input, option, a, userData);
 
 			} else {
-				System.out.print(PROMPTOUT);
+				System.out.print(PROMPTOUT);//prompt fora de sessao
 				option = readMenuOption(input);
 				executeMenuOption(input, option, a, userData);
 			}
