@@ -1,14 +1,14 @@
 /*
- * iterador de utilizadores
+ * iterador de boleias
  */
 public class Iterator {
 	private int count;
 	private int current;
-	private User[] user;
+	private Ride[] ride;
 
-	public Iterator(User[] user, int count) {
+	public Iterator(Ride[] ride, int count) {
 		current = 0;
-		this.user = user;
+		this.ride = ride;
 		this.count = count;
 	}
 
@@ -17,7 +17,7 @@ public class Iterator {
 	}
 
 	// Pre: hasNext()
-	public User next() {
-		return user[current++];
+	public Ride next() {
+		return ride[current++];
 	}
 }

@@ -37,7 +37,7 @@ public class Main {
 				processNewRide(input, userData, a);
 				break;
 			case USERRIDELIST:
-				processUserRideList();
+				processUserRideList(input, a, userData);
 				break;
 			case RIDE:
 				processRide(input, userData, a);
@@ -95,8 +95,14 @@ public class Main {
 
 	}
 
-	private static void processUserRideList() {// TODO
-
+	private static void processUserRideList(Scanner input, FctBoleia a, UserData userData) {// WIP
+		String date = input.nextLine();
+		System.out.println(date.equals(""));
+		if (date.equals("")) {
+			printVoidList(a, userData);
+		} else {
+			printDateList(date);
+		}
 	}
 
 	private static void processRide(Scanner input, UserData userData, FctBoleia a) {
@@ -123,17 +129,20 @@ public class Main {
 			} else if (userData.getUser(email).getRideData().getRide(date) == null) {
 				System.out.println("Deslocacao nao existe.");
 			} else {
-				System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
-				System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
-				System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + " "
-						+ userData.getUser(email).getRideData().getRide(date).getTime() + " "
-						+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "
-						+ userData.getUser(email).getRideData().getRide(date).getSeats());
+				printRideInfo(userData, email, date);
 				System.out.println(
 						"Lugares vagos: " + userData.getUser(email).getRideData().getRide(date).getAvailableSeats());
-			} // arredondar para as casas decimais certas
+			}
 		}
-
+	}
+	
+	private static void printRideInfo(UserData userData, String email, String date) {
+		System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
+		System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
+		System.out.println(userData.getUser(email).getRideData().getRide(date).getDate() + " "
+				+ userData.getUser(email).getRideData().getRide(date).getTime() + " "
+				+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "
+				+ userData.getUser(email).getRideData().getRide(date).getSeats());
 	}
 
 	private static void processRemove() {// TODO
@@ -181,7 +190,7 @@ public class Main {
 			do {
 				right = true;
 				System.out.print("password (entre 3 e 5 caracteres - digitos e letras): ");
-				password = input.next();
+				password = input.next();// verificar que tem so digitos e letras
 				input.nextLine();
 				if (invalidPassword(password)) {
 					i++;
@@ -218,6 +227,26 @@ public class Main {
 		}
 	}
 
+	private static void printDateList(String date) {
+		System.out.println("dateList");
+	}
+
+	private static void printVoidList(FctBoleia a, UserData userData) {
+		System.out.println("entrou");
+		if (a.getCurrentUser().getRideNumber() != 0) {
+			Iterator it = a.getCurrentUser().getRideData().iterator();
+			System.out.println("entrou");
+			System.out.println(it.hasNext());
+			while (it.hasNext()) {
+				Ride r = it.next();
+				printRideInfo(userData, a.getCurrentUser().getEmail(), r.getDate());
+				System.out.println("Boleias registadas: " + r.getSeatsTaken());
+			}
+		} else {
+			System.out.println(a.getCurrentUser().getName() + " nao tem deslocacoes registadas.");
+		}
+	}
+
 	private static boolean validation(UserData userData, BasicDate basicDate, FctBoleia a, String date, String email) {
 		boolean valid = true;
 		if (userData.hasUser(email)) {
@@ -227,7 +256,8 @@ public class Main {
 						if (userData.getUser(email).getRideData().getRide(date).getAvailableSeats() > 0) {
 							userData.getUser(email).getRideData().getRide(date).seatsDec();
 						} else {
-							System.out.println(a.getCurrentUser().getName() + " nao existe lugar. Boleia nao registada.");
+							System.out
+									.println(a.getCurrentUser().getName() + " nao existe lugar. Boleia nao registada.");
 							valid = false;
 						}
 					} else {
@@ -270,17 +300,15 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
 		UserData userData = new UserData();
-		int n =0;
+		int n = 0;
 		String option = "";
-		/*Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
-		Ride r2 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
-		Ride[] temp = new Ride[2];
-		temp[0] = r1;
-		temp[1] = r2;
-		IteratorSorted i = new IteratorSorted(temp, 2);
-		while (n < temp.length) {
-			System.out.println(temp[n].getDate());n++;
-		}*/
+		/*
+		 * Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2); Ride r2 =
+		 * new Ride("origin", "destination", "01-01-2019", 1, 1, 2); Ride[] temp = new
+		 * Ride[2]; temp[0] = r1; temp[1] = r2; IteratorSorted i = new
+		 * IteratorSorted(temp, 2); while (n < temp.length) {
+		 * System.out.println(temp[n].getDate());n++; }
+		 */
 		do {
 			if (a.getCurrentUser() != null) {
 				System.out.print(a.getCurrentUser().getEmail() + " > ");// prompt dentro de sessao
@@ -288,7 +316,7 @@ public class Main {
 				executeMenuOption(input, option, a, userData);
 
 			} else {
-				System.out.print(PROMPTOUT);//prompt fora de sessao
+				System.out.print(PROMPTOUT);// prompt fora de sessao
 				option = readMenuOption(input);
 				executeMenuOption(input, option, a, userData);
 			}
