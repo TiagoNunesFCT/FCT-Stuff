@@ -270,10 +270,17 @@ public class Main {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
 		UserData userData = new UserData();
+		int n =0;
 		String option = "";
-		Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
-		Ride r2 = new Ride("origin", "destination", "02-01-2019", 1, 1, 2);
-		//IteratorSorted i = new IteratorSorted()
+		/*Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
+		Ride r2 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2);
+		Ride[] temp = new Ride[2];
+		temp[0] = r1;
+		temp[1] = r2;
+		IteratorSorted i = new IteratorSorted(temp, 2);
+		while (n < temp.length) {
+			System.out.println(temp[n].getDate());n++;
+		}*/
 		do {
 			if (a.getCurrentUser() != null) {
 				System.out.print(a.getCurrentUser().getEmail() + " > ");// prompt dentro de sessao
