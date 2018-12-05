@@ -17,24 +17,35 @@ public class BasicDate {
 		for (int i = 0; i < split.length; i++) {
 			rawDate[i] = Integer.parseInt(split[i].trim());
 		}
-
 	}
 
 	/*
 	 * verificacoes da data
 	 */
-	public boolean isValid() {// anos bissextos
-		boolean valid = true;
-		if (getYear() < 2018
-				|| (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
-				|| (getDay() > 31 && (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7
-						|| getMonth() == 8 || getMonth() == 10 || getMonth() == 12))
-				|| (((getYear() % 4) == 0) && (getDay() > 29 && getMonth() == 2))
-				|| (((getYear() % 4) != 0) && (getDay() > 28 && getMonth() == 2))) {
-			valid = false;
-		}
-		return valid;
-	}
+	public boolean isValid() {
+        boolean valid = true;
+        if (getYear() < 2018
+                || (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
+                || (getDay() > 31 && (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7
+                        || getMonth() == 8 || getMonth() == 10 || getMonth() == 12))
+                || ((isLeap()) && (getDay() > 29 && getMonth() == 2))
+                || ((!isLeap()) && (getDay() > 28 && getMonth() == 2))) {
+            valid = false;
+        }
+        return valid;
+    }
+    
+	private boolean isLeap() {
+        boolean Leapness;
+        if (getYear() % 4 !=0) {
+        Leapness = false;
+        }else if (getYear() % 400 ==0) {
+            Leapness = true;
+        }else if (getYear() % 100 ==0) {
+            Leapness = false;
+        }else {Leapness = true;}
+        return Leapness;
+    }
 
 	/**
 	 * Returns the year field of this date, assuming the string used in the

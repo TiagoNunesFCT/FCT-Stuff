@@ -5,13 +5,14 @@ public class User {
 	private String email;
 	private String name;
 	private String password;
+	RideData rideData;
 
 	// pre: email != null && name != null || password != null
 	public User(String email, String name, String password) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
-		RideData rideData = new RideData();
+		rideData = new RideData();
 	}
 
 	public String getEmail() {
@@ -28,5 +29,13 @@ public class User {
 
 	public boolean equals(User otherUser) {// verificar se e preciso
 		return email.equals(otherUser.getEmail());
+	}
+
+	public void addRide(Ride ride) {
+		rideData.addRide(ride);
+	}
+
+	public RideData getRideData() {
+		return rideData;
 	}
 }
