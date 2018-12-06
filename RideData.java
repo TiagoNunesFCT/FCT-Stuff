@@ -15,12 +15,10 @@ public class RideData {
 	public Iterator iterator() {
 		return new Iterator(ride, count);
 	}
+
 	public void addRide(Ride ride) {
-		if (isFull()) {
-			resize();
-		}
 		insertAt(ride, searchPos(ride));
-		count++;/////
+		count++;
 	}
 
 	public boolean hasRide(String date) {
@@ -34,11 +32,11 @@ public class RideData {
 			return ride[searchIndex(date)];
 		}
 	}
-	
+
 	public void remove(String date) {
 		int pos = searchIndex(date);
-		for(int i = pos; i<count-1; i++) {
-			ride[i] = ride[i+1];
+		for (int i = pos; i < count - 1; i++) {
+			ride[i] = ride[i + 1];
 			count--;
 		}
 	}
@@ -61,11 +59,11 @@ public class RideData {
 	}
 
 	private void insertAt(Ride ride, int pos) {
-		openSpace(pos);
-		this.ride[pos] = ride;
-		if(isFull()) {
+		if (isFull()) {
 			resize();
 		}
+		openSpace(pos);
+		this.ride[pos] = ride;
 	}
 
 	private void openSpace(int pos) {
@@ -77,20 +75,16 @@ public class RideData {
 	private int searchPos(Ride ride) {
 		int pos = count;
 		int i = 0;
-		BasicDate d  = new BasicDate(ride.getDate());
+		BasicDate d = new BasicDate(ride.getDate());
 		while (i < count && pos == count) {
-			Ride rideCompare = this.ride[i];
-			BasicDate dCompare  = new BasicDate(rideCompare.getDate());
-			if (d.getYear() > dCompare.getYear()) {
+			BasicDate dCompare = new BasicDate(this.ride[i].getDate());
+			if (d.getYear() < dCompare.getYear()) {
 				pos = i;
-			}else {
-				if(d.getMonth()>dCompare.getMonth()) {
-					pos = i;
-				}else {
-					if(d.getDay()>dCompare.getDay()) {
-						pos = i;
-					}
-				}
+			} else if (d.getMonth() < dCompare.getMonth() && d.getYear() == dCompare.getYear()) {
+				pos = i;
+			} else if (d.getDay() < dCompare.getDay() && d.getMonth() == dCompare.getMonth()
+					&& d.getYear() == dCompare.getYear()) {
+				pos = i;
 			}
 			i++;
 		}
@@ -105,7 +99,7 @@ public class RideData {
 		Ride[] temp = new Ride[GROWTH * ride.length];
 		for (int i = 0; i < ride.length; i++) {
 			temp[i] = ride[i];
-			ride = temp;
 		}
+		ride = temp;
 	}
 }

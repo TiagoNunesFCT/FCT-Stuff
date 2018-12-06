@@ -46,7 +46,7 @@ public class Main {
 				processCheck(input, userData);
 				break;
 			case REMOVE:
-				processRemove();
+				processRemove(input, a);
 				break;
 			default:
 				processComandoInexistente();
@@ -87,12 +87,19 @@ public class Main {
 		int time = input.nextInt();
 		double duration = input.nextDouble();
 		int seats = input.nextInt();
-		if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid()) {
-			Ride ride = new Ride(origin, destination, date, time, duration, seats);
-			a.getCurrentUser().addRide(ride);
+		if (!a.getCurrentUser().getRideData().hasRide(date)) {
+			if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid() && duration >= 0 && seats >= 0) {
+				Ride ride = new Ride(origin, destination, date, time, duration, seats);
+				a.getCurrentUser().addRide(ride);
+				System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
+			} else {
+				System.out.println("Dados invalidos.");
+				System.out.println("Deslocacao nao registada.");
+			}
+		}else {
+			System.out.println(a.getCurrentUser().getName() + " ja tem uma deslocacao registada nesta data.");
+			System.out.println("Deslocacao nao registada.");
 		}
-		System.out.println("Deslocacao registada. Obrigado " + a.getCurrentUser().getName() + ".");
-
 	}
 
 	private static void processUserRideList(Scanner input, FctBoleia a, UserData userData) {// WIP
@@ -135,7 +142,7 @@ public class Main {
 			}
 		}
 	}
-	
+
 	private static void printRideInfo(UserData userData, String email, String date) {
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
@@ -145,8 +152,23 @@ public class Main {
 				+ userData.getUser(email).getRideData().getRide(date).getSeats());
 	}
 
-	private static void processRemove() {// TODO
-		System.out.println("remove");
+	private static void processRemove(Scanner input, FctBoleia a) {// WIP
+		String date = input.next();
+		BasicDate basicDate = new BasicDate(date);
+		if (basicDate.isValid()) {
+			if (a.getCurrentUser().getRideData().hasRide(date)) {
+				if (a.getCurrentUser().getRideData().getRide(date).getAvailableSeats() > 0) {
+					a.getCurrentUser().getRideData().remove(date);
+					System.out.println("Deslocacao removida.");
+				} else {
+					System.out.println(a.getCurrentUser().getName() + " ja nao pode eliminar esta deslocacao.");
+				}
+			} else {
+				System.out.println("Deslocacao nao existe.");
+			}
+		} else {
+			System.out.println("Data invalida.");
+		}
 	}
 
 	private static void processLogin(Scanner input, UserData userData, FctBoleia a) {

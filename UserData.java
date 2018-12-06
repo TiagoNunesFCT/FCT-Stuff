@@ -3,7 +3,7 @@
  */
 public class UserData {
 	private static final int GROWTH = 2;
-	private static final int START = 10000;
+	private static final int START = 1;
 	private int count;
 	private User[] user;
 
@@ -65,13 +65,10 @@ public class UserData {
 	}
 
 	private void resize() {
-		//System.out.print("novo tamanho: ");
-		//System.out.println(GROWTH * user.length);
 		User[] temp = new User[GROWTH * user.length];
-		//System.out.println();
 		for (int i = 0; i < user.length; i++) {
 			temp[i] = user[i];
-			user = temp;
 		}
+		user = temp;
 	}
 }
