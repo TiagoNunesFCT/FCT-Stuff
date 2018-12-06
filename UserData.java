@@ -10,7 +10,6 @@ public class UserData {
 	public UserData() {
 		count = 0;
 		user = new User[START];
-		// Iterator it = new Iterator(user, count);
 	}
 
 	public String getPassword(String email) {
@@ -23,8 +22,6 @@ public class UserData {
 
 	public void addUser(User user) {
 		if (isFull()) {
-			//System.out.print("isFull: ");
-			//System.out.println(isFull());
 			resize();
 		}
 		this.user[count++] = user;
@@ -38,15 +35,7 @@ public class UserData {
 		boolean found = false;
 		int i = 0;
 		int result = -1;
-		//System.out.print("comprimento do vetor de utilizadores: ");
-		//System.out.println(user.length);
 		while ((i < count) && (!found)) {
-			//System.out.print("found: ");
-			//System.out.println(found);
-			//System.out.print("count: ");
-			//System.out.println(count);
-			//System.out.print("i: ");
-			//System.out.println(i);
 			found = user[i].getEmail().equals(email);
 			if(!found) {
 				i++;
@@ -59,8 +48,6 @@ public class UserData {
 	}
 
 	private boolean isFull() {
-		/*System.out.println(count);
-		System.out.println(user.length);*/
 		return (count == user.length);
 	}
 

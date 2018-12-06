@@ -85,7 +85,7 @@ public class Main {
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
 		int time = input.nextInt();
-		double duration = input.nextDouble();
+		int duration = input.nextInt();
 		int seats = input.nextInt();
 		if (!a.getCurrentUser().getRideData().hasRide(date)) {
 			if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid() && duration >= 0 && seats >= 0) {
@@ -96,7 +96,7 @@ public class Main {
 				System.out.println("Dados invalidos.");
 				System.out.println("Deslocacao nao registada.");
 			}
-		}else {
+		} else {
 			System.out.println(a.getCurrentUser().getName() + " ja tem uma deslocacao registada nesta data.");
 			System.out.println("Deslocacao nao registada.");
 		}
@@ -104,11 +104,16 @@ public class Main {
 
 	private static void processUserRideList(Scanner input, FctBoleia a, UserData userData) {// WIP
 		String date = input.nextLine();
+		BasicDate basicDate = new BasicDate(date);
 		System.out.println(date.equals(""));
 		if (date.equals("")) {
 			printVoidList(a, userData);
 		} else {
-			printDateList(date);
+			if (basicDate.isValid()) {
+				printDateList(date);
+			} else {
+				System.out.println("Data invalida.");
+			}
 		}
 	}
 
@@ -157,7 +162,7 @@ public class Main {
 		BasicDate basicDate = new BasicDate(date);
 		if (basicDate.isValid()) {
 			if (a.getCurrentUser().getRideData().hasRide(date)) {
-				if (a.getCurrentUser().getRideData().getRide(date).getAvailableSeats() > 0) {
+				if (a.getCurrentUser().getRideData().getRide(date).getSeatsTaken() == 0) {
 					a.getCurrentUser().getRideData().remove(date);
 					System.out.println("Deslocacao removida.");
 				} else {
@@ -254,11 +259,8 @@ public class Main {
 	}
 
 	private static void printVoidList(FctBoleia a, UserData userData) {
-		System.out.println("entrou");
 		if (a.getCurrentUser().getRideNumber() != 0) {
 			Iterator it = a.getCurrentUser().getRideData().iterator();
-			System.out.println("entrou");
-			System.out.println(it.hasNext());
 			while (it.hasNext()) {
 				Ride r = it.next();
 				printRideInfo(userData, a.getCurrentUser().getEmail(), r.getDate());
@@ -304,7 +306,7 @@ public class Main {
 
 	private static boolean invalidPassword(String pass) {
 		int n = 0;
-		boolean inValid = false;
+		boolean invalid = false;
 		int count = 0;
 		while (n < pass.length()) {
 			if (((pass.charAt(n) > 122) || ((pass.charAt(n) > 90) && (pass.charAt(n) < 97)) || (pass.charAt(n) < 48))) {
@@ -313,24 +315,16 @@ public class Main {
 			n++;
 		}
 		if ((count != 0) || (pass.length() < 3 || pass.length() > 5)) {
-			inValid = true;
+			invalid = true;
 		}
-		return inValid;
+		return invalid;
 	}
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();
 		UserData userData = new UserData();
-		int n = 0;
 		String option = "";
-		/*
-		 * Ride r1 = new Ride("origin", "destination", "01-01-2019", 1, 1, 2); Ride r2 =
-		 * new Ride("origin", "destination", "01-01-2019", 1, 1, 2); Ride[] temp = new
-		 * Ride[2]; temp[0] = r1; temp[1] = r2; IteratorSorted i = new
-		 * IteratorSorted(temp, 2); while (n < temp.length) {
-		 * System.out.println(temp[n].getDate());n++; }
-		 */
 		do {
 			if (a.getCurrentUser() != null) {
 				System.out.print(a.getCurrentUser().getEmail() + " > ");// prompt dentro de sessao

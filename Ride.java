@@ -6,11 +6,11 @@ public class Ride {
 	private String origin;
 	private String destination;
 	private double time;
-	private double duration;
+	private int duration;
 	private int seats;
 	private int availableSeats;
 
-	public Ride(String origin, String destination, String date, double time, double duration, int seats) {
+	public Ride(String origin, String destination, String date, double time, int duration, int seats) {
 		this.date = date;
 		this.origin = origin;
 		this.destination = destination;
@@ -36,7 +36,7 @@ public class Ride {
 		return time;
 	}
 
-	public double getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
