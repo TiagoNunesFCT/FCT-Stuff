@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-        //constantes de comando
 	private static final String HELP = "AJUDA";
 	// Fora de sessao
 	private static final String END = "TERMINA";
@@ -20,11 +19,11 @@ public class Main {
 	private static final String ERROR = "Comando inexistente.";
 	private static final String ENDMESSAGE = "Obrigado. Ate a proxima.";
 	private static final String WRONGPASSWORD = "Password incorrecta.";
-        //scanner
+
 	private static String readMenuOption(Scanner input) {
 		return input.next().toUpperCase();
 	}
-        //interpretador de comandos
+
 	private static void executeMenuOption(Scanner input, String option, FctBoleia a, UserData userData) {
 		if (a.getCurrentUser() != null) {
 			switch (option) {
@@ -50,7 +49,7 @@ public class Main {
 				processRemove(input, a);
 				break;
 			default:
-				processComandoInexistente();
+				processComandoInexistente(input);
 				break;
 			}
 		} else
@@ -68,16 +67,16 @@ public class Main {
 				processLogin(input, userData, a);
 				break;
 			default:
-				processComandoInexistente();
+				processComandoInexistente(input);
 				break;
 			}
 	}
-        //logout
+
 	private static void processLogout(FctBoleia a) {
 		a.logout();
 		System.out.println(ENDMESSAGE);
 	}
-        //nova boleia
+
 	private static void processNewRide(Scanner input, UserData userData, FctBoleia a) {
 		String origin = input.next();
 		input.nextLine();
@@ -86,7 +85,7 @@ public class Main {
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
 		int time = input.nextInt();
-		int duration = input.nextInt();
+		double duration = input.nextDouble();
 		int seats = input.nextInt();
 		if (!a.getCurrentUser().getRideData().hasRide(date)) {
 			if ((time >= 0 && time <= 24) && duration > 0 && basicDate.isValid() && duration >= 0 && seats >= 0) {
@@ -102,22 +101,21 @@ public class Main {
 			System.out.println("Deslocacao nao registada.");
 		}
 	}
-        //lista de boleias
+
 	private static void processUserRideList(Scanner input, FctBoleia a, UserData userData) {// WIP
 		String date = input.nextLine();
-		BasicDate basicDate = new BasicDate(date);
-		System.out.println(date.equals(""));
 		if (date.equals("")) {
 			printVoidList(a, userData);
 		} else {
+			BasicDate basicDate = new BasicDate(date);
 			if (basicDate.isValid()) {
-				printDateList(date);
+				printDateList(a, date, userData);
 			} else {
 				System.out.println("Data invalida.");
 			}
 		}
 	}
-        //entra em boleia
+
 	private static void processRide(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
 		String date = input.next();
@@ -128,7 +126,7 @@ public class Main {
 			System.out.println("Boleia registada.");
 		}
 	}
-        //verificacoes
+
 	private static void processCheck(Scanner input, UserData userData) {
 		String email = input.next();
 		String date = input.next();
@@ -148,7 +146,7 @@ public class Main {
 			}
 		}
 	}
-        //dados de boleia
+
 	private static void printRideInfo(UserData userData, String email, String date) {
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
@@ -157,7 +155,7 @@ public class Main {
 				+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "
 				+ userData.getUser(email).getRideData().getRide(date).getSeats());
 	}
-        //remove
+
 	private static void processRemove(Scanner input, FctBoleia a) {// WIP
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
@@ -165,6 +163,7 @@ public class Main {
 			if (a.getCurrentUser().getRideData().hasRide(date)) {
 				if (a.getCurrentUser().getRideData().getRide(date).getSeatsTaken() == 0) {
 					a.getCurrentUser().getRideData().remove(date);
+					a.getCurrentUser().rideNumberDec();
 					System.out.println("Deslocacao removida.");
 				} else {
 					System.out.println(a.getCurrentUser().getName() + " ja nao pode eliminar esta deslocacao.");
@@ -176,7 +175,7 @@ public class Main {
 			System.out.println("Data invalida.");
 		}
 	}
-        //login
+
 	private static void processLogin(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
 		if (userData.hasUser(email)) {
@@ -197,15 +196,16 @@ public class Main {
 			System.out.println("Utilizador nao existente.");
 		}
 	}
-        //default command
-	private static void processComandoInexistente() {
+
+	private static void processComandoInexistente(Scanner input) {
 		System.out.println(ERROR);
+		input.nextLine();
 	}
-        //sair
+
 	private static void processEnd() {
 		System.out.println(ENDMESSAGE);
 	}
-        //registo
+
 	private static void processRegister(Scanner input, UserData userData) {// dividir em metodos auxiliares
 		String email = input.next();
 		input.nextLine();
@@ -237,7 +237,7 @@ public class Main {
 			System.out.println("Registo nao efetuado.");
 		}
 	}
-        //ajudas
+
 	private static void processHelp(FctBoleia a) {
 		if (a.getCurrentUser() == null) {
 			System.out.println("ajuda - Mostra os comandos existentes");
@@ -254,24 +254,45 @@ public class Main {
 			System.out.println("remove - Retira uma dada deslocacao");
 		}
 	}
-        //lista das datas
-	private static void printDateList(String date) {
-		System.out.println("dateList");
+
+	private static void printDateList(FctBoleia a, String date, UserData userData) {// data esta a passar com espaco e
+																					// da sempre que a data nao existe,
+																					// passar date para basicDate
+		BasicDate basicDate = new BasicDate(date);
+		String d = basicDate.getDay() + "-" + basicDate.getMonth() + "-" + basicDate.getYear();
+		System.out.println(a.getCurrentUser().getRideData().hasRide(" 2-2-2019"));
+		System.out.println(a.getCurrentUser().getRideData().hasRide("2-2-2019"));
+		System.out.println(a.getCurrentUser().getRideData().hasRide(d));
+		if (basicDate.isValid()) {
+			if (a.getCurrentUser().getRideData().hasRide(d)) {
+				Iterator it = userData.iterator();
+				while (it.hasNext("user")) {
+					User temp = it.nextUser();
+					
+					printRideInfo(userData, temp.getEmail(), date);//maybe d
+					System.out.println("Boleias registadas: " + temp.getRideData().getRide(d).getSeatsTaken());
+				}
+			} else {
+				System.out.println(a.getCurrentUser().getName() + " nao existem deslocacoes registadas para  " + d);
+			}
+		} else {
+			System.out.println("Data invalida.");
+		}
 	}
-        //boleias registadas
+
 	private static void printVoidList(FctBoleia a, UserData userData) {
 		if (a.getCurrentUser().getRideNumber() != 0) {
 			Iterator it = a.getCurrentUser().getRideData().iterator();
-			while (it.hasNext()) {
-				Ride r = it.next();
-				printRideInfo(userData, a.getCurrentUser().getEmail(), r.getDate());
-				System.out.println("Boleias registadas: " + r.getSeatsTaken());
+			while (it.hasNext("ride")) {
+				Ride temp = it.nextRide();
+				printRideInfo(userData, a.getCurrentUser().getEmail(), temp.getDate());
+				System.out.println("Boleias registadas: " + temp.getSeatsTaken());
 			}
 		} else {
 			System.out.println(a.getCurrentUser().getName() + " nao tem deslocacoes registadas.");
 		}
 	}
-        //validacao de boleia
+
 	private static boolean validation(UserData userData, BasicDate basicDate, FctBoleia a, String date, String email) {
 		boolean valid = true;
 		if (userData.hasUser(email)) {
@@ -279,7 +300,6 @@ public class Main {
 				if (userData.getUser(email).getRideData().hasRide(date)) {
 					if (!email.equals(a.getCurrentUser().getEmail())) {
 						if (userData.getUser(email).getRideData().getRide(date).getAvailableSeats() > 0) {
-							userData.getUser(email).getRideData().getRide(date).seatsDec();
 						} else {
 							System.out
 									.println(a.getCurrentUser().getName() + " nao existe lugar. Boleia nao registada.");
@@ -304,7 +324,7 @@ public class Main {
 		}
 		return valid;
 	}
-        //password invalida
+
 	private static boolean invalidPassword(String pass) {
 		int n = 0;
 		boolean invalid = false;
@@ -320,7 +340,7 @@ public class Main {
 		}
 		return invalid;
 	}
-        //main
+
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();

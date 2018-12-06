@@ -3,41 +3,84 @@
  */
 public class UserData {
 	private static final int GROWTH = 2;
-	private static final int START = 1;
+	private static final int START = 4;
 	private int count;
 	private User[] user;
-        //lista de users
+
 	public UserData() {
 		count = 0;
 		user = new User[START];
 	}
-        //devolve password
+
+	public Iterator iterator() {
+		return new Iterator(user, count);
+	}
+
 	public String getPassword(String email) {
 		return user[searchIndex(email)].getPassword();
 	}
-        //devolve utilizador
+
 	public User getUser(String email) {
 		return user[searchIndex(email)];
 	}
-        //adiciona utilizador
+
 	public void addUser(User user) {
-		if (isFull()) {
-			resize();
-		}
-		this.user[count++] = user;
+		insertAt(user);
+		count++;
 	}
-        //utilizador existe
+
 	public boolean hasUser(String email) {
 		return (searchIndex(email) >= 0);
 	}
-        //searchindex
+
+	public void sort() {
+		for (int i = 1; i < count; i++) {
+			for (int j = count - 1; j >= i; j--) {
+				User temp = user[j - 1];
+				user[j - 1] = user[j];
+				user[j] = temp;
+			}
+		}
+	}
+
+	private boolean greaterThan(User user, User u) {
+		return user.getEmail().compareTo(u.getEmail()) > 0;
+	}
+
+	private void insertAt(User user) {
+		if (isFull()) {
+			resize();
+		}
+		int pos = searchPos(user);
+		openSpace(pos);
+		this.user[pos] = user;
+	}
+
+	private int searchPos(User user) {
+		int pos = count;
+		int i = 0;
+		while (i < count && pos == count) {
+			if (greaterThan(user, this.user[i])) {
+				pos = i;
+			}
+			i++;
+		}
+		return pos;
+	}
+
+	private void openSpace(int pos) {
+		for (int i = count - 1; i >= pos; i--) {
+			user[i + 1] = user[i];
+		}
+	}
+
 	private int searchIndex(String email) {
 		boolean found = false;
 		int i = 0;
 		int result = -1;
 		while ((i < count) && (!found)) {
 			found = user[i].getEmail().equals(email);
-			if(!found) {
+			if (!found) {
 				i++;
 			}
 		}
@@ -46,11 +89,11 @@ public class UserData {
 		}
 		return result;
 	}
-        //esta cheio
+
 	private boolean isFull() {
 		return (count == user.length);
 	}
-        //resize
+
 	private void resize() {
 		User[] temp = new User[GROWTH * user.length];
 		for (int i = 0; i < user.length; i++) {

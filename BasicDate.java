@@ -24,8 +24,7 @@ public class BasicDate {
 	 */
 	public boolean isValid() {
         boolean valid = true;
-        if (getYear() < 2018
-                || (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
+        if ((getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
                 || (getDay() > 31 && (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7
                         || getMonth() == 8 || getMonth() == 10 || getMonth() == 12))
                 || ((isLeap()) && (getDay() > 29 && getMonth() == 2))
@@ -34,7 +33,7 @@ public class BasicDate {
         }
         return valid;
     }
-        //bissexto
+    
 	private boolean isLeap() {
         boolean Leapness;
         if (getYear() % 4 !=0) {

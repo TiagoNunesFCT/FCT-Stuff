@@ -2,22 +2,40 @@
  * iterador de boleias
  */
 public class Iterator {
-	private int count;
-	private int current;
+	private int countUser;
+	private int countRide;
+	private int currentUser;
+	private int currentRide;
+	private User[] user;
 	private Ride[] ride;
+	
 
 	public Iterator(Ride[] ride, int count) {
-		current = 0;
+		currentRide = 0;
 		this.ride = ride;
-		this.count = count;
+		countRide = count;
 	}
-        //tem seguinte
-	public boolean hasNext() {
-		return current < count;
+	
+	public Iterator(User[] user, int count) {
+		currentUser = 0;
+		this.user = user;
+		countUser = count;
 	}
-        //da seguinte
+
+	public boolean hasNext(String type) {
+		if(type.equals("ride")) {
+			return currentRide<countRide;
+		}else {
+			return currentUser<countUser;
+		}
+	}
+
 	// Pre: hasNext()
-	public Ride next() {
-		return ride[current++];
+	public Ride nextRide() {
+		return ride[currentRide++];
+	}
+	// Pre: hasNext()
+	public User nextUser() {
+		return user[currentUser++];
 	}
 }
