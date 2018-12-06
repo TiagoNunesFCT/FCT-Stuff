@@ -6,25 +6,25 @@ public class RideData {
 	private static final int START = 1;
 	private int count;
 	private Ride[] ride;
-
+        
 	public RideData() {
 		count = 0;
 		ride = new Ride[START];
 	}
-
+        //iterador
 	public Iterator iterator() {
 		return new Iterator(ride, count);
 	}
-
+        //adiciona boleia
 	public void addRide(Ride ride) {
 		insertAt(ride, searchPos(ride));
 		count++;
 	}
-
+        //tem boleia
 	public boolean hasRide(String date) {
 		return (searchIndex(date) >= 0);
 	}
-
+        //devolve boleia em data especifica
 	public Ride getRide(String date) {
 		if (searchIndex(date) == -1) {
 			return null;
@@ -32,7 +32,7 @@ public class RideData {
 			return ride[searchIndex(date)];
 		}
 	}
-
+        //remove boleia
 	public void remove(String date) {
 		int pos = searchIndex(date);
 		for (int i = pos; i < count - 1; i++) {
@@ -40,7 +40,7 @@ public class RideData {
 			count--;
 		}
 	}
-
+        //search index
 	private int searchIndex(String date) {
 		boolean found = false;
 		int i = 0;
@@ -57,7 +57,7 @@ public class RideData {
 		}
 		return result;
 	}
-
+        //insere 
 	private void insertAt(Ride ride, int pos) {
 		if (isFull()) {
 			resize();
@@ -71,7 +71,7 @@ public class RideData {
 			ride[i + 1] = ride[i];
 		}
 	}
-
+        //searchpos
 	private int searchPos(Ride ride) {
 		int pos = count;
 		int i = 0;
@@ -90,11 +90,11 @@ public class RideData {
 		}
 		return pos;
 	}
-
+        //esta cheio
 	private boolean isFull() {
 		return count == ride.length;
 	}
-
+        //resize
 	private void resize() {
 		Ride[] temp = new Ride[GROWTH * ride.length];
 		for (int i = 0; i < ride.length; i++) {

@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
+        //constantes de comando
 	private static final String HELP = "AJUDA";
 	// Fora de sessao
 	private static final String END = "TERMINA";
@@ -19,11 +20,11 @@ public class Main {
 	private static final String ERROR = "Comando inexistente.";
 	private static final String ENDMESSAGE = "Obrigado. Ate a proxima.";
 	private static final String WRONGPASSWORD = "Password incorrecta.";
-
+        //scanner
 	private static String readMenuOption(Scanner input) {
 		return input.next().toUpperCase();
 	}
-
+        //interpretador de comandos
 	private static void executeMenuOption(Scanner input, String option, FctBoleia a, UserData userData) {
 		if (a.getCurrentUser() != null) {
 			switch (option) {
@@ -71,12 +72,12 @@ public class Main {
 				break;
 			}
 	}
-
+        //logout
 	private static void processLogout(FctBoleia a) {
 		a.logout();
 		System.out.println(ENDMESSAGE);
 	}
-
+        //nova boleia
 	private static void processNewRide(Scanner input, UserData userData, FctBoleia a) {
 		String origin = input.next();
 		input.nextLine();
@@ -101,7 +102,7 @@ public class Main {
 			System.out.println("Deslocacao nao registada.");
 		}
 	}
-
+        //lista de boleias
 	private static void processUserRideList(Scanner input, FctBoleia a, UserData userData) {// WIP
 		String date = input.nextLine();
 		BasicDate basicDate = new BasicDate(date);
@@ -116,7 +117,7 @@ public class Main {
 			}
 		}
 	}
-
+        //entra em boleia
 	private static void processRide(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
 		String date = input.next();
@@ -127,7 +128,7 @@ public class Main {
 			System.out.println("Boleia registada.");
 		}
 	}
-
+        //verificacoes
 	private static void processCheck(Scanner input, UserData userData) {
 		String email = input.next();
 		String date = input.next();
@@ -147,7 +148,7 @@ public class Main {
 			}
 		}
 	}
-
+        //dados de boleia
 	private static void printRideInfo(UserData userData, String email, String date) {
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getOrigin());
 		System.out.println(userData.getUser(email).getRideData().getRide(date).getDestination());
@@ -156,7 +157,7 @@ public class Main {
 				+ userData.getUser(email).getRideData().getRide(date).getDuration() + " "
 				+ userData.getUser(email).getRideData().getRide(date).getSeats());
 	}
-
+        //remove
 	private static void processRemove(Scanner input, FctBoleia a) {// WIP
 		String date = input.next();
 		BasicDate basicDate = new BasicDate(date);
@@ -175,7 +176,7 @@ public class Main {
 			System.out.println("Data invalida.");
 		}
 	}
-
+        //login
 	private static void processLogin(Scanner input, UserData userData, FctBoleia a) {
 		String email = input.next();
 		if (userData.hasUser(email)) {
@@ -196,15 +197,15 @@ public class Main {
 			System.out.println("Utilizador nao existente.");
 		}
 	}
-
+        //default command
 	private static void processComandoInexistente() {
 		System.out.println(ERROR);
 	}
-
+        //sair
 	private static void processEnd() {
 		System.out.println(ENDMESSAGE);
 	}
-
+        //registo
 	private static void processRegister(Scanner input, UserData userData) {// dividir em metodos auxiliares
 		String email = input.next();
 		input.nextLine();
@@ -236,7 +237,7 @@ public class Main {
 			System.out.println("Registo nao efetuado.");
 		}
 	}
-
+        //ajudas
 	private static void processHelp(FctBoleia a) {
 		if (a.getCurrentUser() == null) {
 			System.out.println("ajuda - Mostra os comandos existentes");
@@ -253,11 +254,11 @@ public class Main {
 			System.out.println("remove - Retira uma dada deslocacao");
 		}
 	}
-
+        //lista das datas
 	private static void printDateList(String date) {
 		System.out.println("dateList");
 	}
-
+        //boleias registadas
 	private static void printVoidList(FctBoleia a, UserData userData) {
 		if (a.getCurrentUser().getRideNumber() != 0) {
 			Iterator it = a.getCurrentUser().getRideData().iterator();
@@ -270,7 +271,7 @@ public class Main {
 			System.out.println(a.getCurrentUser().getName() + " nao tem deslocacoes registadas.");
 		}
 	}
-
+        //validacao de boleia
 	private static boolean validation(UserData userData, BasicDate basicDate, FctBoleia a, String date, String email) {
 		boolean valid = true;
 		if (userData.hasUser(email)) {
@@ -303,7 +304,7 @@ public class Main {
 		}
 		return valid;
 	}
-
+        //password invalida
 	private static boolean invalidPassword(String pass) {
 		int n = 0;
 		boolean invalid = false;
@@ -319,7 +320,7 @@ public class Main {
 		}
 		return invalid;
 	}
-
+        //main
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
 		FctBoleia a = new FctBoleia();

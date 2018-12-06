@@ -11,11 +11,11 @@ public class Iterator {
 		this.ride = ride;
 		this.count = count;
 	}
-
+        //tem seguinte
 	public boolean hasNext() {
 		return current < count;
 	}
-
+        //da seguinte
 	// Pre: hasNext()
 	public Ride next() {
 		return ride[current++];

@@ -16,27 +16,27 @@ public class IteratorSorted {
 		}
 		current = 0;
 	}
-
+        //tem seguinte
 	public boolean hasNext() {
 		return current < count;
 	}
-
+        //da seguinte
 	// Pre: hasNext()
 	public Ride next() {
 		return rides[current++];
 	}
-
+        //cria espaco
 	private void createGap(int pos) {
 		for (int i = count - 1; i >= pos; i--)
 			rides[i + 1] = rides[i];
 	}
-
+        //insere
 	private void insertAt(Ride ride, int pos) {
 		createGap(pos);
 		rides[pos] = ride;
 		count++;
 	}
-
+        //DEPRECATED-----------------------DELET DIS GRANSUN-----------------------------------------
 	private int binSearchPos(Ride ride) {
 		int pos = -1;
 		if (count == 0) {
