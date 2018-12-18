@@ -18,23 +18,26 @@ public class BasicDate {
 			rawDate[i] = Integer.parseInt(split[i].trim());
 		}
 	}
+	//transforma o objeto data numa String do tipo dd-mm-year
+	public String dateToString() {
+		return getDay()+"-"+getMonth()+"-"+getYear();
+	}
 
 	/*
 	 * verificacoes da data
 	 */
 	public boolean isValid() {
         boolean valid = true;
-        if (getYear() < 2018
-                || (getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
+        if ((getDay() > 30 && (getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11))
                 || (getDay() > 31 && (getMonth() == 1 || getMonth() == 3 || getMonth() == 5 || getMonth() == 7
                         || getMonth() == 8 || getMonth() == 10 || getMonth() == 12))
                 || ((isLeap()) && (getDay() > 29 && getMonth() == 2))
-                || ((!isLeap()) && (getDay() > 28 && getMonth() == 2))) {
+                || ((!isLeap()) && (getDay() > 28 && getMonth() == 2)) || getMonth() > 12 || getDay() < 1) {
             valid = false;
         }
         return valid;
     }
-    
+	//ve se 0 ano introduzido e bissexto
 	private boolean isLeap() {
         boolean Leapness;
         if (getYear() % 4 !=0) {

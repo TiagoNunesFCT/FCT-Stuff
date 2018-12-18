@@ -3,52 +3,80 @@
  */
 public class UserData {
 	private static final int GROWTH = 2;
-	private static final int START = 10000;
+	private static final int START = 4;
 	private int count;
 	private User[] user;
 
 	public UserData() {
 		count = 0;
 		user = new User[START];
-		// Iterator it = new Iterator(user, count);
 	}
 
+	public Iterator iterator() {
+		return new Iterator(user, count);
+	}
+	//devolve password de email especifico
+	//Pre: hasUser(email) 
 	public String getPassword(String email) {
 		return user[searchIndex(email)].getPassword();
 	}
-
+	//devolve utilizador associado a email especifico
+	//Pre: hasUser(email) 
 	public User getUser(String email) {
 		return user[searchIndex(email)];
 	}
-
+	//adiciona um novo utilizador a base de dados
+	//Pre: !hasUser(email) 
 	public void addUser(User user) {
-		if (isFull()) {
-			//System.out.print("isFull: ");
-			//System.out.println(isFull());
-			resize();
-		}
-		this.user[count++] = user;
+		insertAt(user);
+		count++;
 	}
-
+	//verifica se utilizador com este email ja existe
+	//Pre: email!=null
 	public boolean hasUser(String email) {
 		return (searchIndex(email) >= 0);
 	}
 
+	private boolean greaterThan(User user, User u) {
+		return user.getEmail().compareTo(u.getEmail()) < 0;
+	}
+
+	private void insertAt(User user) {
+		if (isFull()) {
+			resize();
+		}
+		int pos = searchPos(user);
+		openSpace(pos);
+		this.user[pos] = user;
+	}
+	//procura no vetor onde se pode colocar o novo utilizador
+	private int searchPos(User user) {
+		int pos = count;
+		int i = 0;
+		while (i < count && pos == count) {
+			if (greaterThan(user, this.user[i])) {
+				pos = i;
+			}
+			i++;
+		}
+		return pos;
+	}
+	//abre espaco para novo utilizador
+	//Pre: pos<count
+	private void openSpace(int pos) {
+		for (int i = count - 1; i >= pos; i--) {
+			user[i + 1] = user[i];
+		}
+	}
+	//verifica se determinado utilizador ja existe
+	//Pre: email!=null
 	private int searchIndex(String email) {
 		boolean found = false;
 		int i = 0;
 		int result = -1;
-		System.out.print("comprimento do vetor de utilizadores: ");
-		System.out.println(user.length);
 		while ((i < count) && (!found)) {
-			//System.out.print("found: ");
-			//System.out.println(found);
-			//System.out.print("count: ");
-			//System.out.println(count);
-			//System.out.print("i: ");
-			//System.out.println(i);
 			found = user[i].getEmail().equals(email);
-			if(!found) {
+			if (!found) {
 				i++;
 			}
 		}
@@ -57,21 +85,16 @@ public class UserData {
 		}
 		return result;
 	}
-
+	//verifica se vetor esta cheio
 	private boolean isFull() {
-		/*System.out.println(count);
-		System.out.println(user.length);*/
 		return (count == user.length);
 	}
-
+	//duplica o tamanho do vetor de utilizadores
 	private void resize() {
-		//System.out.print("novo tamanho: ");
-		//System.out.println(GROWTH * user.length);
 		User[] temp = new User[GROWTH * user.length];
-		//System.out.println();
 		for (int i = 0; i < user.length; i++) {
 			temp[i] = user[i];
-			user = temp;
 		}
+		user = temp;
 	}
 }
